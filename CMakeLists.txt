@@ -5,4 +5,6 @@ set(CMAKE_CXX_STANDARD 17)
 
 add_executable(phone_book main.cpp
         phone_book.h
-        phone_book.cpp)
+        phone_book.cpp
+        cli.h
+)
