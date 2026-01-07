@@ -37,11 +37,11 @@ unsigned int menu(const string &title, const string &description,
   while (true) {
     clear_terminal();
     std::cout << " --- " << title << " --- \n";
-    std::cout << description << '\n';
+    std::cout << description << "\n\n";
     for (int i = 0; i < items.size(); i++) {
       std::cout << i + 1 << ". " << items[i] << '\n';
     }
-    std::cout << "0. " << exit_message << std::endl;
+    std::cout << "\n0. " << exit_message << "\n\n";
     if (error) {
       std::cout << "Invalid input, try again." << std::endl;
     }
