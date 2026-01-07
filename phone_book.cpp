@@ -7,6 +7,8 @@
 using std::string;
 using std::vector;
 
+namespace phone_book {
+
 void add_entry(vector<BookEntry>& book, const string& name, const string& phone,
                const string& email) {
   book.push_back({name, phone, email});
@@ -53,9 +55,15 @@ vector<size_t> find_by(const vector<BookEntry>& book, const BookField field,
         value = book[i].email;
         break;
     }
-    if (value == query) {
+    if (value.find(query) != string::npos) {
       entries.push_back(i);
     }
   }
   return entries;
 }
+
+string to_string(const BookEntry& entry) {
+  return entry.name + ": " + entry.phone + ", " + entry.email;
+}
+
+}  // namespace phone_book

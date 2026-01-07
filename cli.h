@@ -53,4 +53,11 @@ unsigned int menu(const string &title, const string &description,
     error = true;
   }
 }
+
+inline void wait_for_input() {
+  std::cout << "Press Enter to continue...\n";
+  string throwaway;
+  std::getline(std::cin, throwaway);
+}
+
 }  // namespace cli

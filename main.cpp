@@ -6,7 +6,9 @@
 #include <vector>
 
 #include "cli.h"
+#include "phone_book.h"
 
+using phone_book::BookEntry;
 using std::array;
 using std::string;
 using std::vector;
@@ -41,17 +43,57 @@ const string saveload_menu_desc =
     "or load from a file with 'load from'.";
 const array<string, 2> saveload_menu_items{"Save to", "Load from"};
 
-void query_menu() {
+void query_menu(const vector<BookEntry>& book) {
   while (true) {
     const unsigned int action = cli::menu(query_menu_title, query_menu_desc,
                                           query_menu_items, "Go back");
     if (action == 0) {
       break;
     }
+
+    phone_book::BookField field = {};
+    string query;
+    while (query.empty()) {
+      switch (action) {
+        default:
+          throw std::runtime_error("Unknown action");
+        case 1:
+          field = phone_book::NAME;
+          if (auto q = cli::read_value<string>("Enter name query")) {
+            query = *q;
+          }
+          break;
+        case 2:
+          field = phone_book::PHONE;
+          if (auto q = cli::read_value<string>("Enter phone query")) {
+            query = *q;
+          }
+          break;
+        case 3:
+          field = phone_book::EMAIL;
+          if (auto q = cli::read_value<string>("Enter email query")) {
+            query = *q;
+          }
+          break;
+      }
+    }
+
+    auto result = phone_book::find_by(book, field, query);
+    if (!result.empty()) {
+      std::cout << "Found entries:\n";
+    } else {
+      std::cout << "There are no entries for this query.\n";
+    }
+    for (const size_t& index : result) {
+      std::cout << index + 1 << ". " << phone_book::to_string(book[index])
+                << '\n';
+    }
+
+    cli::wait_for_input();
   }
 }
 
-void modify_menu() {
+void modify_menu(const vector<BookEntry>& book) {
   while (true) {
     const unsigned int action = cli::menu(modify_menu_title, modify_menu_desc,
                                           modify_menu_items, "Go back");
@@ -61,7 +103,7 @@ void modify_menu() {
   }
 }
 
-void saveload_menu() {
+void saveload_menu(const vector<BookEntry>& book) {
   while (true) {
     const unsigned int action =
         cli::menu(saveload_menu_title, saveload_menu_desc, saveload_menu_items,
@@ -73,6 +115,7 @@ void saveload_menu() {
 }
 
 int main() {
+  auto book = vector<BookEntry>();
   while (true) {
     // Display main menu
     const unsigned int choice =
@@ -86,13 +129,13 @@ int main() {
       default:
         throw std::runtime_error("Unknown choice");
       case 1:
-        query_menu();
+        query_menu(book);
         break;
       case 2:
-        modify_menu();
+        modify_menu(book);
         break;
       case 3:
-        saveload_menu();
+        saveload_menu(book);
         break;
     }
   }

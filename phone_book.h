@@ -5,6 +5,8 @@
 using std::string;
 using std::vector;
 
+namespace phone_book {
+
 struct BookEntry {
   string name;
   string phone;
@@ -23,3 +25,7 @@ void edit_entry(vector<BookEntry> &book, size_t id, BookField field,
 
 vector<size_t> find_by(const vector<BookEntry> &book, BookField field,
                        const string &query);
+
+string to_string(const BookEntry &entry);
+
+}  // namespace phone_book
