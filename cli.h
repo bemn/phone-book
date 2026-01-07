@@ -31,12 +31,13 @@ std::optional<T> read_value(const string &msg) {
 }
 
 template <size_t N>
-unsigned int menu(const string &title, const array<string, N> &items,
-                  const string &exit_message) {
+unsigned int menu(const string &title, const string &description,
+                  const array<string, N> &items, const string &exit_message) {
   bool error = false;
-  do {
+  while (true) {
     clear_terminal();
     std::cout << " --- " << title << " --- \n";
+    std::cout << description << '\n';
     for (int i = 0; i < items.size(); i++) {
       std::cout << i + 1 << ". " << items[i] << '\n';
     }
@@ -50,6 +51,6 @@ unsigned int menu(const string &title, const array<string, N> &items,
       }
     }
     error = true;
-  } while (true);
+  }
 }
 }  // namespace cli
