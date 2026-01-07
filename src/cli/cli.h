@@ -30,6 +30,13 @@ std::optional<T> read_value(const string &msg) {
   return std::nullopt;
 }
 
+inline string read_line(const string &msg) {
+  std::cout << msg << ": " << std::flush;
+  std::string line;
+  std::getline(std::cin, line);
+  return line;
+}
+
 template <size_t N>
 unsigned int menu(const string &title, const string &description,
                   const array<string, N> &items, const string &exit_message) {
