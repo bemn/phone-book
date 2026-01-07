@@ -16,14 +16,29 @@ inline void clear_terminal() {
   system("clear");  // TODO: make cross-platform
 }
 
+inline string trim(const string &str) {
+  auto start = str.begin();
+  while (start != str.end() && std::isspace(*start)) {
+    ++start;
+  }
+
+  auto end = str.end();
+  do {
+    --end;
+  } while (end != start && std::isspace(*end));
+
+  return {start, end + 1};
+}
+
 template <typename T>
 std::optional<T> read_value(const string &msg) {
   std::cout << msg << ": " << std::flush;
-  std::string line;
+  string line;
   std::getline(std::cin, line);
   if (line.empty()) {
     return std::nullopt;
   }
+  line = trim(line);
   std::stringstream stream(line);
   T value;
   if (stream >> value && stream.eof()) return value;
@@ -32,9 +47,9 @@ std::optional<T> read_value(const string &msg) {
 
 inline string read_line(const string &msg) {
   std::cout << msg << ": " << std::flush;
-  std::string line;
+  string line;
   std::getline(std::cin, line);
-  return line;
+  return trim(line);
 }
 
 template <size_t N>

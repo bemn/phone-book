@@ -46,9 +46,7 @@ void query_menu(const vector<BookEntry>& book) {
           throw std::runtime_error("Unknown action");
       }
 
-      if (auto q = cli::read_value<string>("Enter query")) {
-        query = *q;
-      }
+      query = cli::read_line("Enter query");
     }
 
     if (auto result = phone_book::find_by(book, field, query); result.empty()) {
