@@ -12,9 +12,7 @@ using std::string;
 using std::vector;
 
 namespace cli {
-inline void clear_terminal() {
-  system("clear");  // TODO: make cross-platform
-}
+inline void clear_terminal() { std::cout << "\033[2J\033[H" << std::flush; }
 
 inline string trim(const string &str) {
   auto start = str.begin();
@@ -56,7 +54,7 @@ inline string read_line(const string &msg) {
   line = trim(line);
   string sanitized;
   for (const char &c : line) {
-    if (std::isprint(c)) {
+    if (std::isprint(c) && c != ',') {
       sanitized += c;
     }
   }
@@ -72,7 +70,7 @@ unsigned int menu(const string &title, const string &description,
     clear_terminal();
     std::cout << " --- " << title << " --- \n";
     std::cout << description << "\n\n";
-    for (int i = 0; i < items.size(); i++) {
+    for (size_t i = 0; i < items.size(); i++) {
       std::cout << i + 1 << ". " << items[i] << '\n';
     }
     std::cout << "\n0. " << exit_message << "\n\n";

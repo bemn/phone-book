@@ -115,7 +115,7 @@ void remove_submenu(vector<BookEntry>& book) {
     }
     std::cout << "ID: " << id + 1 << std::endl;
 
-    vector<string> table = phone_book::to_table({1, book[id]});
+    vector<string> table = phone_book::to_table(book, id, 1);
     std::cout << "Removing the following entry:\n";
     for (const string& line : table) {
       std::cout << line << '\n';
@@ -158,7 +158,7 @@ void edit_submenu(vector<BookEntry>& book) {
     }
     std::cout << "ID: " << id + 1 << std::endl;
 
-    vector<string> table = phone_book::to_table({1, book[id]});
+    vector<string> table = phone_book::to_table(book, id, 1);
     std::cout << "Editing the following entry:\n";
     for (const string& line : table) {
       std::cout << line << '\n';

@@ -51,11 +51,12 @@ void query_menu(const vector<BookEntry>& book) {
       std::cout << "There are no entries for this query.\n";
     } else {
       std::cout << "Found entries:\n";
-      auto book_results = vector<BookEntry>(result.size());
-      for (int i = 0; i < result.size(); i++) {
-        book_results[i] = book[result[i]];
+      vector<string> table(1);
+      for (unsigned long i : result) {
+        auto row = phone_book::to_table(book, i, 1);
+        table[0] = row[0];
+        table.push_back(row[1]);
       }
-      auto table = phone_book::to_table(book_results);
       for (const auto& line : table) {
         std::cout << line << '\n';
       }

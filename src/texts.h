@@ -11,8 +11,8 @@ inline const string main_menu_title = "Phone Book";
 inline const string main_menu_desc =
     "You can search for entries with 'query',\n"
     "add, remove or edit them with 'modify,\n"
-    "and save to or load the book from the file.";
-inline const array<string, 3> main_menu_items{"Query", "Modify", "Save/Load"};
+    "and export to or import the book from the file.";
+inline const array<string, 3> main_menu_items{"Query", "Modify", "Export/Import"};
 
 // Query menu
 inline const string query_menu_title = "Phone Book | Query";
@@ -33,8 +33,8 @@ inline const array<string, 3> modify_menu_items{"Add new", "Remove by ID",
                                                 "Edit by ID"};
 
 // Save/Load menu
-inline const string saveload_menu_title = "Phone Book | Save/Load";
+inline const string saveload_menu_title = "Phone Book | Export/Import";
 inline const string saveload_menu_desc =
-    "Save current book to a specified file with 'save to',\n"
-    "or load from a file with 'load from'.";
-inline const array<string, 2> saveload_menu_items{"Save to", "Load from"};
+    "Export current book to a specified file with 'export'\n"
+    "or load from a file using 'import'.";
+inline const array<string, 2> saveload_menu_items{"Export to", "Import from"};
