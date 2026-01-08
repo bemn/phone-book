@@ -27,7 +27,7 @@ void modify_menu(vector<BookEntry>& book) {
         remove_submenu(book);
         break;
       case 3:
-        // edit_submenu(book);
+        edit_submenu(book);
         break;
       default:
         throw std::runtime_error("Unknown action");
@@ -92,23 +92,28 @@ void add_submenu(vector<BookEntry>& book) {
 }
 
 void remove_submenu(vector<BookEntry>& book) {
-  bool error = false;
-  size_t id;
+  bool error = false, got_id = false;
+  size_t id = 0;
   while (true) {
     cli::clear_terminal();
     std::cout << " --- " << modify_menu_title << " | Remove" << " --- \n";
     std::cout << "Remove an entry from the book." << "\n\n";
-    if (error) std::cout << "Invalid input, try again.\n";
-    if (auto i = cli::read_value<size_t>("Enter ID")) {
-      id = *i - 1;
-    } else {
+    if (!got_id) {
+      if (error) std::cout << "This ID doesn't exist, try again.\n";
+      if (auto i = cli::read_value<size_t>("Enter ID (0 to cancel)")) {
+        if (*i == 0) {
+          break;
+        }
+        if (*i - 1 < book.size()) {
+          id = *i - 1;
+          got_id = true;
+          continue;
+        }
+      }
       error = true;
       continue;
     }
-    if (id >= book.size()) {
-      error = true;
-      continue;
-    }
+    std::cout << "ID: " << id + 1 << std::endl;
 
     vector<string> table = phone_book::to_table({1, book[id]});
     std::cout << "Removing the following entry:\n";
@@ -123,6 +128,71 @@ void remove_submenu(vector<BookEntry>& book) {
     } else {
       std::cout << "Aborting.\n";
     }
+    cli::wait_for_input();
+    break;
+  }
+}
+
+void edit_submenu(vector<BookEntry>& book) {
+  bool error = false, got_id = false;
+  string name, phone, email;
+  size_t id = 0;
+  while (true) {
+    cli::clear_terminal();
+    std::cout << " --- " << modify_menu_title << " | Edit" << " --- \n";
+    std::cout << "Edit an entry in the book." << "\n\n";
+    if (!got_id) {
+      if (error) std::cout << "This ID doesn't exist, try again.\n";
+      if (auto i = cli::read_value<size_t>("Enter ID (0 to cancel)")) {
+        if (*i == 0) {
+          break;
+        }
+        if (*i - 1 < book.size()) {
+          id = *i - 1;
+          got_id = true;
+          continue;
+        }
+      }
+      error = true;
+      continue;
+    }
+    std::cout << "ID: " << id + 1 << std::endl;
+
+    vector<string> table = phone_book::to_table({1, book[id]});
+    std::cout << "Editing the following entry:\n";
+    for (const string& line : table) {
+      std::cout << line << '\n';
+    }
+    std::cout << std::endl;
+    if (name.empty()) {
+      name = cli::read_line(string("Edit name (") + book[id].name + ")");
+      if (name.empty()) {
+        name = book[id].name;
+      }
+      continue;
+    }
+    std::cout << "Name: " << name << '\n';
+
+    if (phone.empty()) {
+      phone = cli::read_line(string("Edit phone (") + book[id].phone + ")");
+      if (phone.empty()) {
+        phone = book[id].phone;
+      }
+      continue;
+    }
+    std::cout << "Phone: " << phone << '\n';
+
+    if (email.empty()) {
+      email = cli::read_line(string("Edit email (") + book[id].email + ")");
+      if (email.empty()) {
+        email = book[id].email;
+      }
+      continue;
+    }
+    std::cout << "Email: " << email << '\n';
+
+    phone_book::edit_entry(book, id, name, phone, email);
+    std::cout << "\nEntry edited.\n";
     cli::wait_for_input();
     break;
   }

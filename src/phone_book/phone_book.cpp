@@ -25,18 +25,16 @@ void remove_entry(vector<BookEntry>& book, const size_t id) {
   book.pop_back();
 }
 
-void edit_entry(vector<BookEntry>& book, const size_t id, const BookField field,
-                const string& value) {
-  switch (field) {
-    case NAME:
-      book[id].name = value;
-      break;
-    case PHONE:
-      book[id].phone = value;
-      break;
-    case EMAIL:
-      book[id].email = value;
-      break;
+void edit_entry(vector<BookEntry>& book, const size_t id, const string& name,
+                const string& phone, const string& email) {
+  if (!name.empty()) {
+    book[id].name = name;
+  }
+  if (!phone.empty()) {
+    book[id].phone = phone;
+  }
+  if (!email.empty()) {
+    book[id].email = email;
   }
 }
 
