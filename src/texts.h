@@ -29,7 +29,8 @@ inline const string modify_menu_title = "Phone Book | Modify";
 inline const string modify_menu_desc =
     "Add new entries with 'add', remove with 'remove',\n"
     "edit them with 'edit'.";
-inline const array<string, 3> modify_menu_items{"Add", "Remove", "Edit"};
+inline const array<string, 3> modify_menu_items{"Add new", "Remove by ID",
+                                                "Edit by ID"};
 
 // Save/Load menu
 inline const string saveload_menu_title = "Phone Book | Save/Load";
