@@ -27,6 +27,10 @@ inline string trim(const string &str) {
     --end;
   } while (end != start && std::isspace(*end));
 
+  if (start > end) {
+    return "";
+  }
+
   return {start, end + 1};
 }
 

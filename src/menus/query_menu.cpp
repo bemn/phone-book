@@ -2,6 +2,7 @@
 
 #include "cli/cli.h"
 #include "menus.h"
+#include "phone_book/phone_book.h"
 #include "texts.h"
 
 using phone_book::BookEntry;
@@ -20,8 +21,9 @@ void query_menu(const vector<BookEntry>& book) {
         std::cout << "There are no entries.\n";
       } else {
         std::cout << "All entries:\n";
-        for (size_t i = 0; i < book.size(); ++i) {
-          std::cout << i + 1 << ". " << phone_book::to_string(book[i]) << '\n';
+        auto table = phone_book::to_table(book);
+        for (const auto& line : table) {
+          std::cout << line << '\n';
         }
       }
       cli::wait_for_input();
@@ -29,33 +31,33 @@ void query_menu(const vector<BookEntry>& book) {
     }
 
     phone_book::BookField field = {};
-    string query;
-
-    while (query.empty()) {
-      switch (action) {
-        case 1:
-          field = phone_book::NAME;
-          break;
-        case 2:
-          field = phone_book::PHONE;
-          break;
-        case 3:
-          field = phone_book::EMAIL;
-          break;
-        default:
-          throw std::runtime_error("Unknown action");
-      }
-
-      query = cli::read_line("Enter query");
+    switch (action) {
+      case 1:
+        field = phone_book::NAME;
+        break;
+      case 2:
+        field = phone_book::PHONE;
+        break;
+      case 3:
+        field = phone_book::EMAIL;
+        break;
+      default:
+        throw std::runtime_error("Unknown action");
     }
 
-    if (auto result = phone_book::find_by(book, field, query); result.empty()) {
+    string query = cli::read_line("Enter query");
+    auto result = phone_book::find_by(book, field, query);
+    if (result.empty() || query.empty()) {
       std::cout << "There are no entries for this query.\n";
     } else {
       std::cout << "Found entries:\n";
-      for (const auto index : result) {
-        std::cout << index + 1 << ". " << phone_book::to_string(book[index])
-                  << '\n';
+      auto book_results = vector<BookEntry>(result.size());
+      for (int i = 0; i < result.size(); i++) {
+        book_results[i] = book[result[i]];
+      }
+      auto table = phone_book::to_table(book_results);
+      for (const auto& line : table) {
+        std::cout << line << '\n';
       }
     }
 

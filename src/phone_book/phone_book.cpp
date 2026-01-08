@@ -1,5 +1,6 @@
 #include "phone_book/phone_book.h"
 
+#include <iomanip>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -62,8 +63,39 @@ vector<size_t> find_by(const vector<BookEntry>& book, const BookField field,
   return entries;
 }
 
-string to_string(const BookEntry& entry) {
-  return entry.name + ": " + entry.phone + ", " + entry.email;
+vector<string> to_table(const vector<BookEntry>& book) {
+  int max_name = -1, max_phone = -1, max_email = -1;
+  for (const auto& entry : book) {
+    max_name = std::max(static_cast<int>(entry.name.length()), max_name);
+    max_phone = std::max(static_cast<int>(entry.phone.length()), max_phone);
+    max_email = std::max(static_cast<int>(entry.email.length()), max_email);
+  }
+  int max_id = static_cast<int>(std::to_string(book.size()).length());
+
+  // Lengths of corresponding headers
+  max_id = std::max(2, max_id);
+  max_name = std::max(4, max_name);
+  max_phone = std::max(5, max_phone);
+  max_email = std::max(5, max_email);
+
+  auto table = vector<string>(book.size() + 1);
+  std::stringstream stream;
+  stream << " | " << std::right << std::setw(max_id) << "ID"
+         << " | " << std::right << std::setw(max_name) << "NAME"
+         << " | " << std::right << std::setw(max_phone) << "PHONE"
+         << " | " << std::right << std::setw(max_email) << "EMAIL"
+         << " | ";
+  table[0] = stream.str();
+  for (int i = 0; i < book.size(); i++) {
+    stream.str("");
+    stream.clear();
+    stream << " | " << std::left << std::setw(max_id) << i + 1 << " | "
+           << std::left << std::setw(max_name) << book[i].name << " | "
+           << std::left << std::setw(max_phone) << book[i].phone << " | "
+           << std::left << std::setw(max_email) << book[i].email << " | ";
+    table[i + 1] = stream.str();
+  }
+  return table;
 }
 
 }  // namespace phone_book

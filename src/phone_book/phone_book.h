@@ -26,6 +26,6 @@ void edit_entry(vector<BookEntry> &book, size_t id, BookField field,
 vector<size_t> find_by(const vector<BookEntry> &book, BookField field,
                        const string &query);
 
-string to_string(const BookEntry &entry);
+vector<string> to_table(const vector<BookEntry>& book);
 
 }  // namespace phone_book
