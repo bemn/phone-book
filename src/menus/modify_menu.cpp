@@ -24,7 +24,7 @@ void modify_menu(vector<BookEntry>& book) {
         add_submenu(book);
         break;
       case 2:
-        // remove_submenu(book);
+        remove_submenu(book);
         break;
       case 3:
         // edit_submenu(book);
@@ -86,6 +86,43 @@ void add_submenu(vector<BookEntry>& book) {
 
     phone_book::add_entry(book, name, phone, email);
     std::cout << "\nEntry added.\n";
+    cli::wait_for_input();
+    break;
+  }
+}
+
+void remove_submenu(vector<BookEntry>& book) {
+  bool error = false;
+  size_t id;
+  while (true) {
+    cli::clear_terminal();
+    std::cout << " --- " << modify_menu_title << " | Remove" << " --- \n";
+    std::cout << "Remove an entry from the book." << "\n\n";
+    if (error) std::cout << "Invalid input, try again.\n";
+    if (auto i = cli::read_value<size_t>("Enter ID")) {
+      id = *i - 1;
+    } else {
+      error = true;
+      continue;
+    }
+    if (id >= book.size()) {
+      error = true;
+      continue;
+    }
+
+    vector<string> table = phone_book::to_table({1, book[id]});
+    std::cout << "Removing the following entry:\n";
+    for (const string& line : table) {
+      std::cout << line << '\n';
+    }
+    std::cout << std::endl;
+    string ans = cli::read_line("Are you sure? (y/N):");
+    if (ans == "y" || ans == "Y") {
+      phone_book::remove_entry(book, id);
+      std::cout << "Entry with ID " << id + 1 << " removed.\n";
+    } else {
+      std::cout << "Aborting.\n";
+    }
     cli::wait_for_input();
     break;
   }
