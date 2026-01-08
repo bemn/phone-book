@@ -12,7 +12,13 @@ using std::string;
 using std::vector;
 
 namespace cli {
-inline void clear_terminal() { std::cout << "\033[2J\033[H" << std::flush; }
+inline void clear_terminal() {
+#ifdef _WIN32
+  std::system("cls");
+#else
+  std::cout << "\033[2J\033[H" << std::flush;
+#endif
+}
 
 inline string trim(const string &str) {
   auto start = str.begin();
