@@ -1,5 +1,6 @@
 #include "phone_book/phone_book.h"
 
+#include <algorithm>
 #include <fstream>
 #include <iomanip>
 #include <stdexcept>
@@ -11,9 +12,16 @@ using std::vector;
 
 namespace phone_book {
 
+void sort_book(vector<BookEntry>& book) {
+  std::sort(
+      book.begin(), book.end(),
+      [](const BookEntry& a, const BookEntry& b) { return b.name > a.name; });
+}
+
 void add_entry(vector<BookEntry>& book, const string& name, const string& phone,
                const string& email) {
   book.push_back({name, phone, email});
+  sort_book(book);
 }
 
 void remove_entry(vector<BookEntry>& book, const size_t id) {
@@ -37,6 +45,7 @@ void edit_entry(vector<BookEntry>& book, const size_t id, const string& name,
   if (!email.empty()) {
     book[id].email = email;
   }
+  sort_book(book);
 }
 
 vector<size_t> find_by(const vector<BookEntry>& book, const BookField field,
@@ -136,6 +145,7 @@ std::vector<BookEntry> load_from_csv(const std::string& path) {
       book.push_back({words[1], words[2], words[3]});
     }
   }
+  sort_book(book);
   return book;
 }
 
