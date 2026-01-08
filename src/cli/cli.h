@@ -53,7 +53,15 @@ inline string read_line(const string &msg) {
   std::cout << msg << ": " << std::flush;
   string line;
   std::getline(std::cin, line);
-  return trim(line);
+  line = trim(line);
+  string sanitized;
+  for (const char &c : line) {
+    if (std::isprint(c)) {
+      sanitized += c;
+    }
+  }
+
+  return sanitized;
 }
 
 template <size_t N>
