@@ -121,7 +121,7 @@ void remove_submenu(vector<BookEntry>& book) {
       std::cout << line << '\n';
     }
     std::cout << std::endl;
-    string ans = cli::read_line("Are you sure? (y/N):");
+    string ans = cli::read_line("Are you sure? (y/N)");
     if (ans == "y" || ans == "Y") {
       phone_book::remove_entry(book, id);
       std::cout << "Entry with ID " << id + 1 << " removed.\n";
