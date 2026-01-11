@@ -100,7 +100,7 @@ void remove_submenu(vector<BookEntry>& book) {
     std::cout << "Remove an entry from the book." << "\n\n";
     if (!got_id) {
       if (error) std::cout << "This ID doesn't exist, try again.\n";
-      if (auto i = cli::read_value<size_t>("Enter ID (0 to cancel)")) {
+      if (auto i = cli::read_value<size_t>("Enter ID (0 to cancel)")) {  //read_value is optional
         if (*i == 0) {
           break;
         }

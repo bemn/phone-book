@@ -43,7 +43,7 @@ void query_menu(const vector<BookEntry>& book) {
         break;
       default:
         throw std::runtime_error("Unknown action");
-    }
+    } // switch between fields for find_by
 
     string query = cli::read_line("Enter query");
     auto result = phone_book::find_by(book, field, query);
@@ -53,7 +53,7 @@ void query_menu(const vector<BookEntry>& book) {
       std::cout << "Found entries:\n";
       vector<string> table(1);
       for (unsigned long i : result) {
-        auto row = phone_book::to_table(book, i, 1);
+        auto row = phone_book::to_table(book, i, 1); // get single entry as table
         table[0] = row[0];
         table.push_back(row[1]);
       }

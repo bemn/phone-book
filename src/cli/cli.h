@@ -13,9 +13,9 @@ using std::vector;
 
 namespace cli {
 inline void clear_terminal() {
-#ifdef _WIN32
+#ifdef _WIN32 // Windows
   std::system("cls");
-#else
+#else // Unix-based systems
   std::cout << "\033[2J\033[H" << std::flush;
 #endif
 }
@@ -24,7 +24,7 @@ inline string trim(const string &str) {
   auto start = str.begin();
   while (start != str.end() && std::isspace(*start)) {
     ++start;
-  }
+  } 
 
   auto end = str.end();
   do {
@@ -36,7 +36,7 @@ inline string trim(const string &str) {
   }
 
   return {start, end + 1};
-}
+} // trim using iterators
 
 template <typename T>
 std::optional<T> read_value(const string &msg) {
@@ -47,20 +47,20 @@ std::optional<T> read_value(const string &msg) {
     return std::nullopt;
   }
   line = trim(line);
-  std::stringstream stream(line);
+  std::stringstream stream(line); 
   T value;
   if (stream >> value && stream.eof()) return value;
   return std::nullopt;
 }
 
 inline string read_line(const string &msg) {
-  std::cout << msg << ": " << std::flush;
+  std::cout << msg << ": " << std::flush; 
   string line;
   std::getline(std::cin, line);
   line = trim(line);
-  string sanitized;
+  string sanitized; 
   for (const char &c : line) {
-    if (std::isprint(c) && c != ',') {
+    if (std::isprint(c) && c != ',') { // remove non-printable characters and commas
       sanitized += c;
     }
   }

@@ -83,7 +83,7 @@ vector<string> to_table(const vector<BookEntry>& book, size_t from,
     max_name = std::max(static_cast<int>(entry.name.length()), max_name);
     max_phone = std::max(static_cast<int>(entry.phone.length()), max_phone);
     max_email = std::max(static_cast<int>(entry.email.length()), max_email);
-  }
+  } // calculate max lengths for formatting
   int max_id = static_cast<int>(std::to_string(book.size()).length());
 
   // Lengths of corresponding headers
@@ -101,14 +101,14 @@ vector<string> to_table(const vector<BookEntry>& book, size_t from,
          << " | ";
   table[0] = stream.str();
   size_t current_row = 1;
-  for (size_t i = from; i < from + amount; i++) {
+  for (size_t i = from; i < from + amount; i++) { // fill table rows
     stream.str("");
     stream.clear();
     stream << " | " << std::left << std::setw(max_id) << i + 1 << " | "
            << std::left << std::setw(max_name) << book[i].name << " | "
            << std::left << std::setw(max_phone) << book[i].phone << " | "
            << std::left << std::setw(max_email) << book[i].email << " | ";
-    table[current_row] = stream.str();
+    table[current_row] = stream.str(); 
     current_row++;
   }
   return table;
